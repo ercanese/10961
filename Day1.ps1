@@ -143,3 +143,12 @@ Get-Command -Module SqlServer -Verb Get -Noun "*Job*"
 Get-Command -Verb * -Noun *date*
 
 get-date
+
+
+####Help
+
+Get-Help -Name Get-service
+
+Get-Service -ComputerName -Name AJRouter 
+
+Get-Help -Name Get-Service -Full
