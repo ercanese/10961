@@ -121,21 +121,25 @@ Get-LocalUser -Name ErcanEse
 
 #Makine üzerinde bulunan komutlar içerisinden bir "user" oluşturma görevi olan komutu bulun ve Pembe adında bir kullanıcı oluşturun.
 #Oluşturduğunuz bu kullanıcının ismini değiştiren "rename" eden komutu bulun ve ismini mavi olarak değiştirin.
-
-
+Get-Command -Verb * -Noun LocalUser
+New-LocalUser -Name Pembe -AccountNeverExpires -FullName "-Pembe" -NoPassword 
+Rename-LocalUser -Name Pembe -NewName Mavi
+Set-LocalUser -Name Mavi -FullName "Mavi" 
 #Makine üzerindeki "Firewall" kurallarını listeleyen komutu bulun ve çalıştırın.
-
+Get-Command -Verb Get -Noun "*Firewall*"
+Get-NetFirewallRule 
 #Makine üzerinde Network "adapter"'ları listeleyen komutu bulun ve çalıştırın.
-
+Get-Command -Verb Get -Noun "*adapter*"
+Get-NetAdapter
 #"DNS" ismini resolve eden bir komut var onu bulun ve ercanese.com adresini resolve edin.
-
-
+Get-Command -Verb * -Noun "*DNS*"
+Resolve-DnsName -Name ercanese.com #-Server 10.10.0.10
 #Makine üzerinde ip "address" lerini listeleyen komutu bulun ve ipleri getirin.
-
+Get-Command -Verb Get -Noun "*Address*" 
+Get-NetIPAddress
 #SQL Server içerisinde olan tüm komutlarını ekranda listeleyelim.
-
-
+Get-Command -Module SqlServer -Verb Get -Noun "*Job*"
 #Makinenin "tarihini (date)" getiren komutu bulun ve çalıştırın.
-Get-Command -Verb Get -Noun *date*
+Get-Command -Verb * -Noun *date*
 
 get-date
