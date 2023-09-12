@@ -151,3 +151,47 @@ Get-ADUser -Identity banu.denk -Properties * | Get-Member -Name Bad*
 #bir aduser kullanıcısının ne zaman logon olduğu ile ilgili bir property varmı kontrol edelim.
 #bir ad grubun ne zaman olusturuldugu ile ilgili bir bilgi varmı kontrol edelim.
 #Bugünün tarihini getiren cmdletin sadece yılı getiren bir özelliği propertysi varmı kontrol edelim.
+#Bir processin başlangıc tarihini gösteren bir property varmı bulalalım.
+Get-Process -Name ChsIME | Get-Member
+StartTime
+#Bir servisin bağımlılıklarını ekranda gösteren bir property varmı bulalım.
+Get-Service -Name ALG | Get-Member
+DependentServices
+#bir aduser kullanıcısının ne zaman logon olduğu ile ilgili bir property varmı kontrol edelim.
+
+Get-ADUser -Identity banu.denk -Properties * | Get-Member
+LastLogonDate
+
+#bir ad grubun ne zaman olusturuldugu ile ilgili bir bilgi varmı kontrol edelim.
+Get-ADGroup -Identity IT -Properties * | Get-Member
+created
+whenCreated
+#Bugünün tarihini getiren cmdletin sadece yılı getiren bir özelliği propertysi varmı kontrol edelim.
+Get-Date | Get-Member
+Year
+
+
+Format-Table #TAblo şeklinde gösterir
+Format-List #Liste şeklinde gösterir
+Format-Wide #Kolon halinde gösterir
+
+
+Get-Date | Format-Table -Property Day,Month,Year
+Get-Date | Format-List -Property Day,Month,year
+
+
+Get-ADUser -Identity Ida -Properties * | 
+    Format-Table -Property Name,Department,City 
+
+Get-ADUser `
+-Identity Ida -Properties *
+
+
+Get-ADUser -Identity Ida -Properties * | 
+Format-List -Property Name,Department,City
+
+Get-ADUser -Identity Lara -Properties * | Get-Member -Name *Logon*
+Get-ADUser -Identity Lara -Properties * | Format-List -Property *Logon*
+
+#Yukarıda bulduğumuz propertyleri ekranda yan propertylerde olacak sekilde tablo ve liste halinde
+# gösterin.
