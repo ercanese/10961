@@ -98,3 +98,56 @@ Remove-NetIPAddress -IPAddress 172.16.0.200 -InterfaceIndex 3
 Test-Connection -ComputerName 172.16.0.200
 #Eski ip adresini makineden kaldırın.
 Remove-NetIPAddress -IPAddress 172.16.0.100 -InterfaceAlias "Ethernet"
+
+
+#Pipeline
+
+
+# | = Pipeline
+
+#altgr + -
+
+Get-Service -Name BITS 
+Stop-Service -Name BITS
+
+Get-Service -Name BITS | start-Service
+
+Get-ADUser -Identity banu.denk | Set-ADUser -GivenName Banu
+Get-ADUser -Identity banu.denk
+
+#Notepad processini başlatın ve pipeline kullanarak bu notepadi kapatın.
+Get-Process -Name notepad
+Stop-Process -Name notepad
+
+Get-Process -Name notepad | Stop-Process 
+
+
+#ALG Servisinin StartType değerini manual olarak set edelim fakat pipeline kullanarak.
+Get-Service -Name ALG
+Set-Service -Name ALG -StartupType Manual
+Get-Service -Name ALG | Set-Service -StartupType Manual
+
+Get-Service -Name ALG,BITS
+Get-Process -Name powershell_ise,notepad
+
+
+Get-NetIPAddress
+
+
+Get-EventLog -LogName Application
+
+
+Get-Service -Name ALG,BITS
+
+Get-Service -Name ALG | Get-Member
+Get-Process -Name notepad | Get-Member
+
+
+Get-ADUser -Identity banu.denk -Properties * | Get-Member -Name Bad*
+
+
+#Bir processin başlangıc tarihini gösteren bir property varmı bulalalım.
+#Bir servisin bağımlılıklarını ekranda gösteren bir property varmı bulalım.
+#bir aduser kullanıcısının ne zaman logon olduğu ile ilgili bir property varmı kontrol edelim.
+#bir ad grubun ne zaman olusturuldugu ile ilgili bir bilgi varmı kontrol edelim.
+#Bugünün tarihini getiren cmdletin sadece yılı getiren bir özelliği propertysi varmı kontrol edelim.
