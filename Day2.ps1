@@ -88,3 +88,13 @@ Test-NetConnection -ComputerName 172.16.0.100 -Port 80
 Test-Connection
 
 Remove-NetIPAddress -IPAddress 172.16.0.11 -InterfaceIndex 3 -Confirm:$false
+
+
+#Yeni bir ip olarak 172.16.0.200 ipsini prefix 16 olacak sekilde makineye tanımlayın.
+Get-NetIPAddress -AddressFamily IPv4
+New-NetIPAddress -InterfaceIndex 3 -IPAddress 172.16.0.200 -PrefixLength 16
+Remove-NetIPAddress -IPAddress 172.16.0.200 -InterfaceIndex 3
+#test cmdletleriyle makinedeki yeniipyi teste edin.
+Test-Connection -ComputerName 172.16.0.200
+#Eski ip adresini makineden kaldırın.
+Remove-NetIPAddress -IPAddress 172.16.0.100 -InterfaceAlias "Ethernet"
