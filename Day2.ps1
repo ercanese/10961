@@ -50,3 +50,28 @@ Get-ADUser -Identity ercan.ese -Properties *
 
 #Grubunun üyelerini çekelim powershell ile.
 Get-ADGroupMember -Identity helpdesk
+
+
+
+#ITM adında bir security grup oluşturun.
+New-ADGroup -DisplayName "ITM" -Description "It Grubudur" -GroupCategory Security -GroupScope Global -Name ITM 
+Get-ADGroup -Identity ITM
+#Kendi adınızda bir kullanıcı oluşturun, Departmanı Sales olsun.
+New-ADUser -Name "Banu" -Department "Sales" -SamAccountName banu.denk 
+Get-ADUser -Identity banu.denk
+
+#oluşturdugunuz bu gruba Ida ve kendi kullanıcınızı ekleyin.
+Add-ADGroupMember -Identity ITM -Members "banu.denk",ida
+Get-ADGroupMember -Identity ITM
+
+
+#Sonra ida kullanıcısını bu gruptan çıkarın.
+Remove-ADGroupMember -Identity ITM -Members Ida -Confirm:$false
+
+#Kendi kullanıcınızın Description alanını "ISTANBUL" olarak set edin.
+
+Set-ADUser -Identity banu.denk -Description "ISTANBUL"
+
+get-aduser -Identity banu.denk -Properties *
+get-aduser -Identity banu.denk -Properties Description,Department,TrustedForDelegation
+
