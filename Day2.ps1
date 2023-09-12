@@ -195,3 +195,55 @@ Get-ADUser -Identity Lara -Properties * | Format-List -Property *Logon*
 
 #Yukarıda bulduğumuz propertyleri ekranda yan propertylerde olacak sekilde tablo ve liste halinde
 # gösterin.
+Get-Process | Format-Table -Property Name,StartTime
+Get-Process | Format-List -Property Name,StartTime
+
+Get-ADUser -Identity Administrator -Properties LastLogonDate | 
+    Format-Table -Property Name,LastLogonDate
+
+
+Get-ADUser -Identity Administrator -Properties LastLogonDate | 
+    Format-List -Property Name,LastLogonDate
+
+Get-ADUser -Identity Lara -Properties * | Format-Table -Property Name,Created,WhenCreated
+Get-ADUser -Identity Lara -Properties * | Format-List -Property Name,Created,WhenCreated
+Get-Service | Format-Table -Property Name,Status,StartType,DisplayName -AutoSize -Wrap
+
+
+#Sıralama için kullandığımız Sort-object
+
+Get-Service | Sort-Object -Property Name
+Get-Service | Sort-Object -Property Status
+
+Get-Service | Sort-Object -Property Name -Descending | Format-Table -Property Name,Status,StartType
+Get-Service | Sort-Object -Property Status -Descending
+
+Get-Help -Name Get-ADUser -Full
+
+Get-ADUser -Identity Lara
+Get-ADUser -Filter * -Properties * #Tüm kullanıcıların tüm propertyleri
+
+#Bana processleri cpu değerine göre sıralayın ve ekranda sadece isim cpu ve starttime değeri olsun.
+Get-Process | 
+    Sort-Object -Property CPU | Format-Table -Property Name,StartTime,CPU
+
+#Bana servisleri statuse göre tersten sıralayın ve sadece ekranda name,Status,starttype olsun.
+Get-Service |
+    Sort-Object -Descending -Property Status |
+        Format-Table -Property Name,Status,StartType
+
+
+#bana ad üzerinde kullanıcıları departmana göre sıralayarak ekranda sadece name,samaccountname ve department 
+#olacak sekilde getirin.
+Get-ADUser -Filter * -Properties Department |
+    Sort-Object -Property Department |
+        Format-Table -Property Name,SamAccountName,Department
+
+
+
+#Bana en çok cpu tüketen processler en üstte olacak şekilde bir sıralama yapın
+#ve ekranda sadece name cpu değeri olsun.
+
+Get-Process |
+    Sort-Object -Property CPU -Descending |
+        Format-Table -Property Name,CPU
