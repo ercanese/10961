@@ -75,3 +75,16 @@ Set-ADUser -Identity banu.denk -Description "ISTANBUL"
 get-aduser -Identity banu.denk -Properties *
 get-aduser -Identity banu.denk -Properties Description,Department,TrustedForDelegation
 
+
+Get-Command -Verb * -Noun "*Address*"
+Get-Command -Verb * -Noun NetIPAddress
+
+Get-NetIPAddress
+
+New-NetIPAddress -InterfaceIndex 3 -IPAddress 172.16.0.100 -PrefixLength 16 #-DefaultGateway 172.16.0.1 
+Test-NetConnection -ComputerName 172.16.0.100
+
+Test-NetConnection -ComputerName 172.16.0.100 -Port 80
+Test-Connection
+
+Remove-NetIPAddress -IPAddress 172.16.0.11 -InterfaceIndex 3 -Confirm:$false
