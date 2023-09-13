@@ -145,3 +145,87 @@ Get-Service | Select-Object -Property NAme,Status,@{
     
 #Makine üzerinde hotfixlerin yüklü olup olmadığını belirten bir komut var onu bulun
 #ve hotfixlerin ne zaman yüklendiğini gün olarak gösteren komutu yazın.
+Get-Command -Verb * -Noun *Hotfix*
+
+Get-HotFix | Select-Object -Property HotfixID,@{
+    n='UpdateAge';
+    e={(New-TimeSpan -Start $PSItem.InstalledOn -End (Get-Date)).Days}
+}
+
+Get-HotFix | Format-List -Property *
+
+@{} #hash table
+
+@{
+n="ComputernameErcan";
+e={}
+}
+
+
+
+
+
+
+#Filtreleme
+
+Get-NetIPAddress -AddressFamily IPv4
+Get-Service 
+Where-Object
+
+"Ercan" -eq "Akif" #eşittir
+"Ercan" -eq "ercan"
+10 -gt 9 #büyüktür
+10 -gt 11
+"ercan" -ceq "ercan" #büyük küçük harf eşittir
+10 -lt 9 #küçüktür
+"Ercan" -like "*r*" #Benzer eşittir.
+
+Get-Service | Where-Object {$PSItem.Status -eq "Running"}
+
+Get-Process | Where-Object {$PSItem.CPU -gt 10}  | Select-Object -Property Name,Cpu
+Get-Service | Where-Object {$PSItem.Status -ne "Stopped"}
+
+Get-Service | Where-Object {$PSItem.Name -like "A*"}
+Get-Service | Where-Object {$PSItem.Name -notlike "A*"}
+
+
+#StartTpe durumu Automatic olan servisleri ekranda görelim.
+Get-Service | 
+    Where-Object {$PSItem.StartType -eq "Automatic"} | Select-Object -Property Name,StartType
+#cpu değeri 100den küçük olanları ekranda görelim.
+Get-Process | Where-Object {$PSItem.CPU -lt 100} |
+    Select-Object -Property name,cpu 
+
+#Ad deki sadece security grup olan grupları ekranda görelim.
+Get-ADGroup -Filter * | Where-Object {$PSItem.GroupCategory -eq "Security"} | Select-Object -Property Name,GroupCategory
+Get-ADGroup -Filter *
+
+#Process değeri 10dan büyük olanları ekranda isme göre sıralı şekilde sadece name ve cpu değeri olacak şekilde görelim
+Get-Process | 
+    Where-Object {$PSItem.CPU -gt 10} | 
+        Sort-Object -Property Name | 
+            Select-Object -Property Name,CPU
+#Ad üzerinde departman bilgisi IT  olan kullanıcıları isme göre sıralı bir şekilde
+#ekranda sadece name,Department olacak şekilde görelim.
+
+Get-ADUser -Filter * -Properties Department |
+    Where-Object {$PSItem.Department -eq "IT"} | 
+            Sort-Object -Property Name |  
+                Select-Object -Property Name,Department
+
+#Bana sadece enable olan firewall kurallarını listeleyin.
+
+Get-NetFirewallRule -Enabled True | Select-Object -Property Name,Enabled
+Get-NetFirewallRule | 
+    Where-Object {$PSItem.Enabled -eq "True"}| 
+        Select-Object -Property Name,Enabled
+
+#Deparmantmanı Sales olan kullanıcıları ekranda oluşturulma tarihi gün olarak hesaplanacak şekilde görelim.
+
+Get-ADUser -Filter 'Department -eq "Sales"' 
+Get-ADUser -Filter * -Properties Department,WhenCreated |
+    Where-Object {$PSItem.Department -eq "Sales"} |
+        Select-Object -Property Name,SAmAccountName,@{
+            n='AccountAge';
+            e={(New-TimeSpan -Start $PSItem.WhenCreated -End (Get-Date)).Days}
+        }
