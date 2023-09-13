@@ -36,3 +36,112 @@ Get-Process |
     Sort-Object -Property Cpu -Descending |
         Select-Object -Property Name,cpu -Skip 1 -First 1
 
+
+Get-Service | Measure-Object
+Get-ADUser -Filter * |  Measure-Object
+
+Get-Process | Measure-Object -Property CPU -Sum -Average -Maximum -Minimum
+
+
+Get-Service | Select-Object -Property NAme,Status,@{
+    n="ComputernameErcan";
+    e={hostname}
+    }
+    
+    Get-Process | Select-Object -Property Name,CPU,@{
+    n="2xCPU";
+    e={$psitem.CPU * 2}
+    }
+    
+    #Processlerden id değerini 10 ile çarparak yeni bir custom property oluşturun.
+    Get-Process |
+        Select-Object -Property CPU,Name,ID,@{
+         n="10xID";
+         e={$PSItem.id * 10}
+        }
+    
+    
+    Get-Process | Select-Object -Property ID,@{
+    n="10*ID";
+    e={$PSItem.id * 10}
+    }
+    
+    
+    #GetNetipaddress cmdletine custom olarak computername propertysini ekleyin.
+    
+    Get-NetIPAddress |
+        Select-Object -Property IPAddress, @{
+            n="ComputerName";
+            e={hostname}
+        }
+    
+    
+    #Processlerden VirtualMemorySize64 propertysini 1GB a bölerek ekranda custom property olarak gösterin.
+    
+    Get-Process | 
+        Select-Object -Property Name,@{
+            n="VirtualMemorySize64GB";
+            e={(($PSItem.VirtualMemorySize64 / 1024) /1024)/1024}
+        }
+    
+    Get-Process | 
+        Select-Object -Property Name,@{
+            n="VirtualMemorySize64GB";
+            e={($PSItem.VirtualMemorySize64 / 1GB)}
+        }
+    
+    Get-Service -Name ALG | Select-Object -Property Name
+    
+    Get-NetIPAddress | Select-Object -Property IpAddress -First 1 -ExpandProperty IpAddress #Objeden property değerini ayırmak için kullanılır expandproperty.
+    
+    Get-Service -Name ALG | Select-Object -Property Name -ExpandProperty Name
+    
+    
+    (Get-Service -Name ALG).Name
+    
+    
+    Get-Disk | Get-Member
+    Get-Disk | Select-Object -Property Size,FriendlyName
+    
+    
+    Get-Disk | Select-Object -Property Size,FriendlyName,@{
+        n="GBSize";
+        e={($PSItem.Size / 1GB)}
+    }
+    
+    
+    Get-Command -Verb * -Noun "*Span*"
+    New-TimeSpan -Start 9/1/2023 -End 9/13/2023 | Get-Member
+    Get-Help -Name New-TimeSpan -Examples
+    
+    #Processlerin kac dakika önce başladığını ekranda gösreren komutu yazın.
+    Get-Process | 
+        Select-Object -Property Name,StartTime,@{
+            n="ProcessAgeMin";
+            e={(New-TimeSpan -Start $PSItem.StartTime -End (Get-Date)).TotalMinutes}
+        }
+    #AD üzerinde kullanııcların kac gün önce oluşturulduğunu yazın.
+    
+    Get-ADUser -Filter * -Properties * |
+        Select-Object -Property Name,WhenCreated,@{
+            n="AccountAge";
+            e={(New-TimeSpan -Start $PSItem.WhenCreated -End (Get-Date)).TotalDays}
+        }
+    
+    
+    @{} #hash table
+    
+    @{
+    n="ComputernameErcan";
+    e={}
+    }
+    
+    
+    
+    
+    Get-Service | Get-Member
+
+
+    
+#Makine üzerinde hotfixlerin yüklü olup olmadığını belirten bir komut var onu bulun
+#ve hotfixlerin ne zaman yüklendiğini gün olarak gösteren komutu yazın.
