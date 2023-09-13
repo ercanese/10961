@@ -229,3 +229,101 @@ Get-ADUser -Filter * -Properties Department,WhenCreated |
             n='AccountAge';
             e={(New-TimeSpan -Start $PSItem.WhenCreated -End (Get-Date)).Days}
         }
+
+
+#Dışarı Export etme
+
+
+Get-Service | Where-Object {$PSItem.Status -eq "Running"}
+
+Get-Process | Where-Object {$PSItem.CPU -gt 10}  | Select-Object -Property Name,Cpu
+Get-Service | Where-Object {$PSItem.Status -ne "Stopped"}
+
+Get-Service | Where-Object {$PSItem.Name -like "A*"}
+Get-Service | Where-Object {$PSItem.Name -notlike "A*"}
+
+
+#StartTpe durumu Automatic olan servisleri ekranda görelim.
+Get-Service | 
+    Where-Object {$PSItem.StartType -eq "Automatic"} | Select-Object -Property Name,StartType
+#cpu değeri 100den küçük olanları ekranda görelim.
+Get-Process | Where-Object {$PSItem.CPU -lt 100} |
+    Select-Object -Property name,cpu 
+
+#Ad deki sadece security grup olan grupları ekranda görelim.
+Get-ADGroup -Filter * | Where-Object {$PSItem.GroupCategory -eq "Security"} | Select-Object -Property Name,GroupCategory
+Get-ADGroup -Filter *
+
+#Process değeri 10dan büyük olanları ekranda isme göre sıralı şekilde sadece name ve cpu değeri olacak şekilde görelim
+Get-Process | 
+    Where-Object {$PSItem.CPU -gt 10} | 
+        Sort-Object -Property Name | 
+            Select-Object -Property Name,CPU
+#Ad üzerinde departman bilgisi IT  olan kullanıcıları isme göre sıralı bir şekilde
+#ekranda sadece name,Department olacak şekilde görelim.
+
+Get-ADUser -Filter * -Properties Department |
+    Where-Object {$PSItem.Department -eq "IT"} | 
+            Sort-Object -Property Name |  
+                Select-Object -Property Name,Department
+
+#Bana sadece enable olan firewall kurallarını listeleyin.
+
+Get-NetFirewallRule -Enabled True | Select-Object -Property Name,Enabled
+Get-NetFirewallRule | 
+    Where-Object {$PSItem.Enabled -eq "True"}| 
+        Select-Object -Property Name,Enabled
+
+#Deparmantmanı Sales olan kullanıcıları ekranda oluşturulma tarihi gün olarak hesaplanacak şekilde görelim.
+
+Get-ADUser -Filter 'Department -eq "Sales"' 
+Get-ADUser -Filter * -Properties Department,WhenCreated |
+    Where-Object {$PSItem.Department -eq "Sales"} |
+        Select-Object -Property Name,SAmAccountName,@{
+            n='AccountAge';
+            e={(New-TimeSpan -Start $PSItem.WhenCreated -End (Get-Date)).Days}
+        }
+
+
+
+Get-Service | Where-Object {$PSItem.Status -eq "Stopped"} | Where-Object {$PSItem.StartType -eq "Automatic"}
+Get-Service | Where-Object {$PSItem.Status -eq "Stopped" -and $PSItem.StartType -eq "Automatic" }
+
+#city bilgisi london olupta departmanı It olan kullanıcıları ekranda departman city ve isim olarak görelim.
+Get-ADUser -Filter * -Properties Department,city,name |
+    Where-Object {$PSItem.City -eq "London" -and $PSItem.Department -eq "IT"} |
+        Select-Object -Property Name,Department,City
+
+
+
+#Departmanı it veya sales olan kullanıcıları ekranda yine yukaradaki propertylerde görelim.
+
+Get-ADUser -Filter * -Properties * | Where-Object {$PSItem.Department -eq "Sales" -or $PSItem.DEpartment -eq "IT"} |
+     Sort-Object -Property Name |
+            Select-Object -Property Name,City,Department 
+
+#CPU değeri 10 dan büyük olan ve isminin içerisinde A harfi geçen processleri ekranda listeleyelim.
+Get-Process |
+    Where-Object {$PSItem.cpu -gt 10 -and $PSItem.Name -like "*s*"}
+
+
+Get-Process |
+    Where-Object {$PSItem.cpu -gt 10 -and $PSItem.Name -like "*s*"} | Out-File -FilePath C:\Demo\Process.txt
+
+Get-Process |
+    Where-Object {$PSItem.cpu -gt 10 -and $PSItem.Name -like "*s*"} | Export-Csv -Path C:\Demo\process.csv -NoTypeInformation
+
+Get-Process |
+    Where-Object {$PSItem.cpu -gt 10 -and $PSItem.Name -like "*s*"} | ConvertTo-Json | Out-File -FilePath C:\Demo\Process.json
+
+Get-Process |
+    Where-Object {$PSItem.cpu -gt 10 -and $PSItem.Name -like "*s*"} | ConvertTo-Html | Out-File -FilePath C:\Demo\Process.html
+
+
+
+#Servislerden A ile başlayanları bularak txt formatında sadece name ve startype değerini dışarı alalım.
+#Departmanı ıt olan kullanıcıları bularak sadece çıktı olarak Name ve departmanı csv formatında dışarı alalım.
+
+
+#Makinede bulunan volumeleri size ve freesize değerlerini gb cinsinden hesaplayarak dışarıya sadece
+#Driveletter ve Size,freesize olacak şekilde json formatında dışarı alalım.
