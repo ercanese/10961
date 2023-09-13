@@ -321,9 +321,32 @@ Get-Process |
 
 
 
+
 #Servislerden A ile başlayanları bularak txt formatında sadece name ve startype değerini dışarı alalım.
+Get-Service |
+    Where-Object {$PSItem.Name -like "A*"} |
+        Select-Object -Property Name,StartType |
+            Out-File -FilePath C:\Demo\Service.txt
+
 #Departmanı ıt olan kullanıcıları bularak sadece çıktı olarak Name ve departmanı csv formatında dışarı alalım.
 
+Get-ADUser -Filter * -Properties department |
+    Where-Object {$PSItem.Department -eq "IT"} | Select-Object -Property Name,Department |
+        Export-Csv -Path C:\Demo\User.csv 
 
 #Makinede bulunan volumeleri size ve freesize değerlerini gb cinsinden hesaplayarak dışarıya sadece
 #Driveletter ve Size,freesize olacak şekilde json formatında dışarı alalım.
+
+Get-Command -Verb * -Noun "*volume*"
+
+
+Get-Volume | Select-Object -Property DriveLetter,Size,SizeRemaining,@{
+    n='GBSize';
+    e={[Math]::Round($PSItem.Size / 1GB)}
+},
+@{
+    n='GBFreesize';
+    e={$PSItem.SizeRemaining / 1GB}
+} | ConvertTo-Json | Out-File -FilePath C:\Demo\Drive.json
+
+[Math]::Round() # PowerShellde bir .Net methodu çağırmak için kullandığımız yöntem.
