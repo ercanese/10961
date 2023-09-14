@@ -264,3 +264,25 @@ $bosdizi.GetType()
 $dizi += 1
 #op_Add
 
+[array]$dizi = "Ercan"
+
+$dizi += 1
+#op_Add
+
+$LogPath.Split(".")[-1] 
+
+#Boş elamanlı bir dizi oluşturun ve içerisine teker teker elma,armut ve çilek ekleyin.
+$Meyveler = @()
+
+$Meyveler += "Elma"
+$Meyveler += "Armut"
+$Meyveler += "çilek"
+
+#Sadece çalışan servislerin olduğu bir dizi oluşturun.
+$RunningS = Get-Service | Where-Object {$PSItem.Status -eq "Running"}
+#Ad üzerinde Sales departmanına üye olan kullanııcları bir dizide tutun ve 10. kullanıcının
+#ismini ekranda yalın halde gösterin.
+
+$SalesUsers = Get-ADUser -Filter * -Properties Department | Where-Object {$PSItem.Department -eq "Sales"}
+($SalesUsers | Select-Object -First 1 -Skip 9).name
+$SalesUsers[9].Name
