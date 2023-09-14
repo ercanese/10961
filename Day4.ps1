@@ -115,3 +115,76 @@ $Name = "Banu"
 
 Get-CimInstance -CimSession $abdullahSession -ClassName win32_BIOS
 $abdullahSession | Remove-CimSession
+
+#Uzak makineye cimsession ile bağlanarak makine üzerindeki BIOS bilgilerini getirin.
+$SessionErcan = New-CimSession -ComputerName LON-DC1,LON-Svr1 -Credential adatum\administrator
+
+Get-CimInstance -ClassName win32_BIOS -CimSession $SessionErcan
+
+(Get-CimClass -ClassName win32_OperatingSystem).CimClassMethods
+
+
+Get-CimInstance -ClassName win32_OperatingSystem -ComputerName LON-SVR1 |
+    Invoke-CimMethod -MethodName Reboot 
+
+(Get-CimClass -ClassName Win32_Service).CimClassMethods
+
+
+Get-CimInstance -ComputerName LON-SVR1 -ClassName win32_service | Where-Object {$PSItem.Name -eq "ALG"} |
+    Invoke-CimMethod -ComputerName LON-SVR1 -MethodName ChangeStartMode -Arguments @{StartMode="Automatic"}
+
+
+#Değişkenler
+
+
+$LogPath = "C:\Demo2"
+
+#PascalCase
+#camelCase
+
+$LogPath.GetType()
+
+$Number1 = 10
+
+$Number1  | Get-Member
+$Number1.GetType()
+
+$Number2 = 20
+
+
+$Name = "ercan"
+
+$LastName = "Ese"
+
+
+$ServiceALG = Get-Service -Name ALG
+$ServiceALG.GetType()
+$LaraUser = Get-ADUser -Identity LAra
+
+(Get-Service -Name ALG).Name
+
+$ServiceALG.Name
+
+$Number1 + $Number2
+$Name + " " + $LastName
+
+#İki adet int değere sahip değişken oluşturun ve bunların toplamını toplan değişkeninde tutun.
+$N1 = 100
+$N2 = 200
+$Toplam = $n1 + $n2
+
+#Birtane log path değişkeni oluşturun C:\demo olsun bir adet File değişkeni oluşturun Demo.txt
+#olsun bunların ikisini fullpath adında bir değişkende birleştirin.
+$LogP = "C:\Demo"
+$File = "Demo.txt"
+
+$FullPath = $LogP + "\" + $File
+
+Get-Item -Path $FullPath
+
+
+#Ad üzerinde departmanı it olan tüm kullanıcıları bir değişkene atın.
+
+$IT = Get-ADUser -Filter * -Properties Department,Name |
+    Where-Object {$PSItem.Department -eq "IT"} | Select-Object -Property Name,Department
+$IT = $null
