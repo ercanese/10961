@@ -188,3 +188,37 @@ Get-Item -Path $FullPath
 $IT = Get-ADUser -Filter * -Properties Department,Name |
     Where-Object {$PSItem.Department -eq "IT"} | Select-Object -Property Name,Department
 $IT = $null
+
+
+Write-Host "$FullPath" -ForegroundColor Cyan
+
+$BITS = Get-Service -Name BITS
+Write-Host "$((Get-Service -Name BITS).Name)"
+Write-Host "$($BITS.Name)" #Bir değişkenin propertysini çift tırnak içerisinde göstermek için kullanılır.
+$BITS.name
+
+$LogPath.GetType()
+$LogPath | Get-Member
+
+$LogPath.EndsWith("2")
+$Email = "ercan.ese@bilgeadam.com"
+
+$Email.Split("@")
+$Email.Insert(2,"r")
+$Email.Replace("bilgeadam.com","ercanese.com")
+
+$DayNow = Get-Date
+$DayNow.GetType()
+$DayNow.ToShortDateString()
+$DayNow.AddDays(-10)
+
+#C:\demo\demo.txt içeren bir değişken oluşturun ve "\" işaretinden bölelim.
+#ercan.ese@bilgeadam.com içeren bir mail değişkeni oluşturun ve .com kısmını .com.tr olarak
+#replace edin.
+#yukarıda oluşturduğunuz C:\demo\demo.txt içeren değişkenin içeriğinin sonunda .txt varmı
+#kontrol eden methodu kullanın.
+#Bügünün tarihinden 50 gün öncesine giden bir değişken oluşturun.
+#ekranda sadece kısa zamanı gösteren bir değişken oluşturun.
+#Oluşturduğunuz herhangi bir değişkenin içerisini boşaltın.
+
+
