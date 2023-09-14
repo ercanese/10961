@@ -213,12 +213,54 @@ $DayNow.ToShortDateString()
 $DayNow.AddDays(-10)
 
 #C:\demo\demo.txt içeren bir değişken oluşturun ve "\" işaretinden bölelim.
+[string]$LogPath = "C:\demo\demo.txt"
+$LogPath | Get-Member
+
+$LogPath.Split("\")
+
 #ercan.ese@bilgeadam.com içeren bir mail değişkeni oluşturun ve .com kısmını .com.tr olarak
 #replace edin.
+
+$Mail = "ercan.ese@bilgeadam.com"
+$Mail.Replace(".com",".com.tr")
 #yukarıda oluşturduğunuz C:\demo\demo.txt içeren değişkenin içeriğinin sonunda .txt varmı
 #kontrol eden methodu kullanın.
+
+$LogPath.EndsWith(".txt")
+$LogPath.Split(".") | Select-Object -Last 1 
+
+$LogPath.Split(".") | Select-Object -First 1
+
+$LogPath.Split(".")[1]
+$LogPath.Split(".")[-1] #-1 her zaman dizinin sonuncu elemanını getirir.
+$LogPath.Split(".")[0..10]
 #Bügünün tarihinden 50 gün öncesine giden bir değişken oluşturun.
 #ekranda sadece kısa zamanı gösteren bir değişken oluşturun.
-#Oluşturduğunuz herhangi bir değişkenin içerisini boşaltın.
 
+$Today = Get-Date 
+$Today.AddDays(-50)
+$Today.ToShortTimeString()
+#Oluşturduğunuz herhangi bir değişkenin içerisini boşaltın.
+$Today = $null
+
+
+$users = "Ercan","Banu","Abdullah","yusuf","akın","begum"
+$servisler = Get-Service
+$servisler.GetType()
+
+$users = $users + "Akif"
+$users += "Fırat"
+
+$users[1]
+$users | Select-Object -First 1 -Skip 1
+$users.GetType()
+
+$bosdizi = @()
+$bosdizi += "Ercan"
+$bosdizi.GetType()
+
+[array]$dizi = "Ercan"
+
+$dizi += 1
+#op_Add
 
