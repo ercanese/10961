@@ -70,3 +70,81 @@ foreach ($item in $Paths)
 }
 
 Get-Service -Verbose
+
+
+$Size = 10GB
+
+if($Size -le 5GB)
+{
+    Write-Host "Girilen Size 5GBdan küçük : $($Size/1GB)" 
+}
+else
+{
+    Write-Host "Girilen Size 5GBdan büyük : $($Size/1GB)" 
+ 
+}
+
+
+$AllUsers = Get-ADUser -Filter * -Properties Department
+
+foreach ($item in $AllUsers)
+{
+    if($item.Department -eq "Sales")
+    {
+        Write-Host "$($item.Name) adlı kullanıcının departmanı Sales'tır" -ForegroundColor Green
+    }
+    else
+    {
+        Write-Host "$($item.Name) adlı kullanıcının departmanı sales değildir"
+    }
+}
+
+#Tüm servisleri bir dizide tutun ve çalışan servisleri yeşil olarak isimşerini ekranda görelim.
+#Çalışmayan servisleri ise kırmızı olarak ekranda görelim.
+
+$Servisler = Get-Service
+
+foreach ($item in $Servisler)
+{
+    if($item.Status -eq "Stopped"){
+        Write-Host "$($item.Name) adlı servis durmuş." -ForegroundColor Red
+    }
+    else
+    {
+        Write-Host "$($item.Name) adlı servis çalışıyor." -ForegroundColor Green
+        
+    }
+}
+
+
+
+$Servisler = Get-Service
+
+foreach ($item in $Servisler)
+{
+    if($item.Status -eq "Stopped"){
+        Write-Host "$($item.Name) adlı servis durmuş." -ForegroundColor Red
+    }
+    else
+    {
+        Write-Host "$($item.Name) adlı servis çalışıyor." -ForegroundColor Green
+        
+    }
+}
+
+#Bana cpu deperi 10dan büyük olan processleri ekranda isimleri kırmızı olarak yazın.
+#cpu değeri 10dan düşükse onlarıda yeşil olarak görelim.
+
+$Proccesses = Get-Process 
+
+foreach ($item in $Proccesses)
+{
+   if($item.CPU -gt 10)
+   {
+        Write-Host "$($item.Name) adlı process cpu değeri 10 dan büyük. Anlık : $($item.CPU) $($item.StartTime)" -ForegroundColor Red
+   }
+   else
+   {
+        Write-Host "$($item.Name) adlı process cpu değeri 10 dan küçük. Anlık : $($item.CPU)" -ForegroundColor Green
+   }
+}
